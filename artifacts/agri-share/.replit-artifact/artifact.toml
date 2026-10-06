@@ -1,0 +1,35 @@
+kind = "web"
+previewPath = "/"
+title = "AgriShare"
+description = "A full-stack agricultural equipment sharing platform connecting farmers with nearby equipment owners, with PostgreSQL-backed profiles and role-protected account areas."
+version = "1.0.0"
+id = "artifacts/agri-share"
+router = "path"
+
+[[services]]
+name = "web"
+paths = ["/"]
+localPort = 23530
+
+[services.development]
+run = "pnpm --filter @workspace/agri-share run dev"
+
+[services.production.build]
+args = ["pnpm", "--filter", "@workspace/agri-share", "run", "build"]
+
+[services.production.build.env]
+NODE_ENV = "production"
+
+[services.production.run]
+args = ["pnpm", "--filter", "@workspace/agri-share", "run", "serve"]
+
+[services.production.run.env]
+PORT = "23530"
+NODE_ENV = "production"
+
+[services.production.health.startup]
+path = "/"
+
+[services.env]
+PORT = "23530"
+BASE_PATH = "/"

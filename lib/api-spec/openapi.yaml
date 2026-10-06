@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Current user profile and onboarding
 paths:
   /healthz:
     get:
@@ -24,6 +26,50 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /auth/me:
+    get:
+      operationId: getCurrentProfile
+      tags: [auth]
+      summary: Get the authenticated user's AgriShare profile
+      responses:
+        "200":
+          description: Current profile state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrentProfile"
+        "401":
+          description: Authentication required
+  /auth/profile:
+    post:
+      operationId: completeProfile
+      tags: [auth]
+      summary: Create the current user's initial farmer or owner profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileInput"
+      responses:
+        "201":
+          description: Profile created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "200":
+          description: Profile already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "400":
+          description: Invalid profile information
+        "401":
+          description: Authentication required
+        "409":
+          description: Profile cannot be changed through onboarding
 components:
   schemas:
     HealthStatus:
@@ -33,4 +79,44 @@ components:
           type: string
       required:
         - status
+    UserRole:
+      type: string
+      enum: [FARMER, OWNER, ADMIN]
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+        email:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserRole"
+      required: [id, displayName, email, roles]
+    CurrentProfile:
+      type: object
+      properties:
+        authenticated:
+          type: boolean
+        onboardingComplete:
+          type: boolean
+        profile:
+          oneOf:
+            - $ref: "#/components/schemas/UserProfile"
+            - type: "null"
+      required: [authenticated, onboardingComplete, profile]
+    ProfileInput:
+      type: object
+      properties:
+        displayName:
+          type: string
+          minLength: 2
+          maxLength: 80
+        role:
+          type: string
+          enum: [FARMER, OWNER]
+      required: [displayName, role]
 

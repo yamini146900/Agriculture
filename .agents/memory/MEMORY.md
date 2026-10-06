@@ -1,0 +1,2 @@
+- [Replit Clerk with Next.js](replit-clerk-nextjs.md) — Supply Replit-managed Clerk keys explicitly to Next middleware and ClerkProvider; `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` is not provisioned.
+- [Next.js TypeScript initialization](nextjs-tsconfig-initialization.md) — Recheck strictness after Next's initial build because it may rewrite the artifact tsconfig.

@@ -1,0 +1,8 @@
+{
+  "/login/[[...sign-in]]/page": "app/login/[[...sign-in]]/page.js",
+  "/farmer/dashboard/page": "app/farmer/dashboard/page.js",
+  "/register/[[...sign-up]]/page": "app/register/[[...sign-up]]/page.js",
+  "/owner/dashboard/page": "app/owner/dashboard/page.js",
+  "/admin/dashboard/page": "app/admin/dashboard/page.js",
+  "/_not-found/page": "app/_not-found/page.js"
+}
